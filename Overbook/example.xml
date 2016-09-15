@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
+    <channel>
+        <title>This is our Feed title</title>
+        <link>http://www.idrsolutions.com</link>
+        <description>This is a breif description of our podcast</description>
+        <language>en-us</language>
+        <copyright>IDRSolutions copyright 2014</copyright>
+        <atom:link href="https://ogilvie.gq/overbook/feed.xml" rel="self" type="application/rss+xml" />
+        <lastBuildDate>Wed, 13 Aug 2014 15:47:00 GMT</lastBuildDate>
+        <itunes:author>IDRSolutions</itunes:author>
+        <itunes:summary>Our First itunes feed</itunes:summary>
+        <itunes:owner>
+            <itunes:name>IDRSolutions</itunes:name>
+            <itunes:email>contact2007@idrsolutions.com</itunes:email>
+        </itunes:owner>
+        <itunes:explicit>No</itunes:explicit>
+        <itunes:image href="http://files.idrsolutions.com/Java_PDF_Podcasts/idrlogo.png" />
+        <itunes:category text="Technology" />
+        <item>
+            <title>Our first Item</title>
+            <link>http://testing.com/Our_first_item.mp3</link>
+            <pubDate>Wed, 13 Aug 2014 15:47:00 GMT</pubDate>
+            <description>This is our first item in our feed</description>
+            <enclosure url="http://files.idrsolutions.com/Java_PDF_Podcasts/Interview_4_Advice_and_XFA.mp3" length="11779397" type="audio/mpeg" />
+            <itunes:summary>Our fiest item</itunes:summary>
+            <itunes:image href="http://files.idrsolutions.com/Java_PDF_Podcasts/idrlogo.png" />
+            <guid isPermaLink="false">ce094c6b-4918-4833-a3fc-c466b3431cd0</guid>
+        </item>
+        <item>
+            <title>Our first Item</title>
+            <link>http://testing.com/Our_first_item.mp3</link>
+            <pubDate>Wed, 13 Aug 2014 15:47:00 GMT</pubDate>
+            <description>This is our first item in our feed</description>
+            <enclosure url="http://files.idrsolutions.com/Java_PDF_Podcasts/Interview_4_Advice_and_XFA.mp3" length="11779397" type="audio/mpeg" />
+            <itunes:summary>Our fiest item</itunes:summary>
+            <itunes:image href="http://files.idrsolutions.com/Java_PDF_Podcasts/idrlogo.png" />
+            <guid isPermaLink="false">ce094c6b-4919-4833-a3fc-c466b3431cd0</guid>
+        </item>
+    </channel>
+</rss>
