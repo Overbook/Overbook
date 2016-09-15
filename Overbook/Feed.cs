@@ -61,7 +61,7 @@ namespace Overbook
         public string Url { get; set; }
 
         [XmlAttribute(AttributeName = "length")]
-        public string Length { get; set; }
+        public int Length { get; set; }
 
         [XmlAttribute(AttributeName = "type")]
         public string Type { get; set; }
@@ -71,7 +71,7 @@ namespace Overbook
     public class Guid
     {
         [XmlAttribute(AttributeName = "isPermaLink")]
-        public string IsPermaLink { get; set; }
+        public bool IsPermaLink { get; set; }
 
         [XmlText]
         public string Text { get; set; }

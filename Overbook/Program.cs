@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Xml;
 using System.IO;
 
 namespace Overbook
 {
-    class Program
+    public static class Program
     {
         public class Utf8StringWriter : StringWriter
         {
@@ -22,22 +20,20 @@ namespace Overbook
                 return null;
 
             var serializer = new XmlSerializer(typeof(T));
-
             var ns = new XmlSerializerNamespaces();
             ns.Add("", "");
 
-            var settings = new XmlWriterSettings();
-            settings.Encoding = new UTF8Encoding(false, false);
-            settings.Indent = false;
-            settings.OmitXmlDeclaration = false;
-            settings.Indent = true;
+            var settings = new XmlWriterSettings
+            {
+                Encoding = new UTF8Encoding(false, false),
+                Indent = true,
+                OmitXmlDeclaration = false
+            };
 
             using (var textWriter = new Utf8StringWriter())
             {
                 using (var xmlWriter = XmlWriter.Create(textWriter, settings))
-                {
                     serializer.Serialize(xmlWriter, value, ns);
-                }
                 return textWriter.ToString();
             }
         }
@@ -48,20 +44,12 @@ namespace Overbook
                 return default(T);
 
             var serializer = new XmlSerializer(typeof(T));
-
-            var settings = new XmlReaderSettings();
-            // No settings need modifying here
-
             using (var textReader = new StringReader(xml))
-            {
-                using (var xmlReader = XmlReader.Create(textReader, settings))
-                {
-                    return (T)serializer.Deserialize(xmlReader);
-                }
-            }
+            using (var xmlReader = XmlReader.Create(textReader, new XmlReaderSettings()))
+                return (T)serializer.Deserialize(xmlReader);
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var items = new List<Item>();
             items.Add(new Item
@@ -73,17 +61,17 @@ namespace Overbook
                 Enclosure = new Enclosure
                 {
                     Url = "http://files.idrsolutions.com/Java_PDF_Podcasts/Interview_4_Advice_and_XFA.mp3",
-                    Length = "11779397",
+                    Length = 11779397,
                     Type = "audio/mpeg"
                 },
-                Summary = "Our fiest item",
+                Summary = "Our first item",
                 Image = new Image
                 {
                     Href = "http://files.idrsolutions.com/Java_PDF_Podcasts/idrlogo.png"
                 },
                 Guid = new Guid
                 {
-                    IsPermaLink = "false",
+                    IsPermaLink = false,
                     Text = "ce094c6b-4918-4833-a3fc-c466b3431cd0"
                 }
             });
@@ -96,7 +84,7 @@ namespace Overbook
                 {
                     Title = "This is our Feed title",
                     Link = "http://www.idrsolutions.com",
-                    Description = "This is a breif description of our podcast",
+                    Description = "This is a brief description of our podcast",
                     Language = "en-us",
                     Copyright = "IDRSolutions copyright 2014",
                     AtomLink = new AtomLink
@@ -126,7 +114,7 @@ namespace Overbook
                 }
             };
             var xml = Serialize(rss);
-            Console.WriteLine(xml.Replace("\r", ""));
+            Console.Write(xml);
         }
     }
 }
