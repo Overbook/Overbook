@@ -46,13 +46,13 @@ namespace Overbook
         public AtomLink()
         {
             Rel = "self";
+            Type = "application/rss+xml";
         }
 
-        public AtomLink(string href, string type)
+        public AtomLink(string href)
             : this()
         {
             Href = href;
-            Type = type;
         }
 
         [XmlAttribute(AttributeName = "href")]

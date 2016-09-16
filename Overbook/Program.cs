@@ -95,54 +95,25 @@ namespace Overbook
                     Type = "audio/mpeg"
                 },
                 Summary = "Our first item",
-                Image = new Image
-                {
-                    Href = "http://files.idrsolutions.com/Java_PDF_Podcasts/idrlogo.png"
-                },
-                Guid = new Guid
-                {
-                    IsPermaLink = false,
-                    Text = "ce094c6b-4918-4833-a3fc-c466b3431cd0"
-                }
+                Image = new Image("http://files.idrsolutions.com/Java_PDF_Podcasts/idrlogo.png"),
+                Guid = new Guid("ce094c6b-4918-4833-a3fc-c466b3431cd0")
             });
-            var rss = new Rss
+            var rss = new Rss(new Channel
             {
-                Atom = "http://www.w3.org/2005/Atom",
-                Itunes = "http://www.itunes.com/dtds/podcast-1.0.dtd",
-                Version = "2.0",
-                Channel = new Channel
-                {
-                    Title = "This is our Feed title",
-                    Link = "http://www.idrsolutions.com",
-                    Description = "This is a brief description of our podcast",
-                    Language = "en-us",
-                    Copyright = "IDRSolutions copyright 2014",
-                    AtomLink = new AtomLink
-                    {
-                        Href = "https://ogilvie.gq/overbook/feed.xml",
-                        Rel = "self",
-                        Type = "application/rss+xml"
-                    },
-                    LastBuildDate = Utils.DateToString(new DateTime(2014, 8, 13, 15, 47, 0)),
-                    Author = "IDRSolutions",
-                    Summary = "Our First itunes feed",
-                    Owner = new Owner
-                    {
-                        Name = "IDRSolutions",
-                        Email = "contact2007@idrsolutions.com"
-                    },
-                    Explicit = "No",
-                    Image = new Image
-                    {
-                        Href = "http://files.idrsolutions.com/Java_PDF_Podcasts/idrlogo.png"
-                    },
-                    Category = new Category
-                    {
-                        Text = "Technology"
-                    },
-                    Items = items
-                }
-            };
+                Title = "This is our Feed title",
+                Link = "http://www.idrsolutions.com",
+                Description = "This is a brief description of our podcast",
+                Language = "en-us",
+                Copyright = "IDRSolutions copyright 2014",
+                AtomLink = new AtomLink("https://ogilvie.gq/overbook/feed.xml"),
+                LastBuildDate = Utils.DateToString(new DateTime(2014, 8, 13, 15, 47, 0)),
+                Author = "IDRSolutions",
+                Summary = "Our First itunes feed",
+                Owner = new Owner("IDRSolutions", "contact2007@idrsolutions.com"),
+                Image = new Image("http://files.idrsolutions.com/Java_PDF_Podcasts/idrlogo.png"),
+                Category = new Category("Technology"),
+                Items = items
+            });
             var xml = Utils.Serialize(rss);
             Console.Write(xml);
         }
