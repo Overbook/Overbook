@@ -7,11 +7,38 @@ using System.IO;
 
 namespace Overbook
 {
-    public static class Program
+    public static class Utils
     {
         public class Utf8StringWriter : StringWriter
         {
             public override Encoding Encoding { get { return Encoding.UTF8; } }
+        }
+
+        public static string DateToString(DateTime date)
+        {
+            var months = new[]
+            {
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec"
+            };
+            return string.Format("{0}, {1} {2} {3} {4:D2}:{5:D2}:{6:D2} GMT",
+                                 date.DayOfWeek.ToString().Substring(0, 3),
+                                 date.Day,
+                                 months[date.Month - 1],
+                                 date.Year,
+                                 date.Hour,
+                                 date.Minute,
+                                 date.Second);
         }
 
         public static string Serialize<T>(T value)
@@ -48,7 +75,10 @@ namespace Overbook
             using (var xmlReader = XmlReader.Create(textReader, new XmlReaderSettings()))
                 return (T)serializer.Deserialize(xmlReader);
         }
+    }
 
+    public static class Program
+    {
         public static void Main(string[] args)
         {
             var items = new List<Item>();
@@ -56,7 +86,7 @@ namespace Overbook
             {
                 Title = "Our first Item",
                 Link = "http://testing.com/Our_first_item.mp3",
-                PubDate = "Wed, 13 Aug 2014 15:47:00 GMT",
+                PubDate = Utils.DateToString(new DateTime(2014, 8, 13, 15, 47, 0)),
                 Description = "This is our first item in our feed",
                 Enclosure = new Enclosure
                 {
@@ -93,7 +123,7 @@ namespace Overbook
                         Rel = "self",
                         Type = "application/rss+xml"
                     },
-                    LastBuildDate = "Wed, 13 Aug 2014 15:47:00 GMT",
+                    LastBuildDate = Utils.DateToString(new DateTime(2014, 8, 13, 15, 47, 0)),
                     Author = "IDRSolutions",
                     Summary = "Our First itunes feed",
                     Owner = new Owner
@@ -113,7 +143,7 @@ namespace Overbook
                     Items = items
                 }
             };
-            var xml = Serialize(rss);
+            var xml = Utils.Serialize(rss);
             Console.Write(xml);
         }
     }
