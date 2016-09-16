@@ -4,22 +4,19 @@ using System.Collections.Generic;
 
 namespace Overbook
 {
-    [XmlRoot(ElementName = "link", Namespace = "http://www.w3.org/2005/Atom")]
-    public class Link
-    {
-        [XmlAttribute(AttributeName = "href")]
-        public string Href { get; set; }
-
-        [XmlAttribute(AttributeName = "rel")]
-        public string Rel { get; set; }
-
-        [XmlAttribute(AttributeName = "type")]
-        public string Type { get; set; }
-    }
-
     [XmlRoot(ElementName = "owner", Namespace = "http://www.itunes.com/dtds/podcast-1.0.dtd")]
     public class Owner
     {
+        public Owner()
+        {
+        }
+
+        public Owner(string name, string email)
+        {
+            Name = name;
+            Email = email;
+        }
+
         [XmlElement(ElementName = "name", Namespace = "http://www.itunes.com/dtds/podcast-1.0.dtd")]
         public string Name { get; set; }
 
@@ -30,6 +27,15 @@ namespace Overbook
     [XmlRoot(ElementName = "image", Namespace = "http://www.itunes.com/dtds/podcast-1.0.dtd")]
     public class Image
     {
+        public Image()
+        {
+        }
+
+        public Image(string href)
+        {
+            Href = href;
+        }
+
         [XmlAttribute(AttributeName = "href")]
         public string Href { get; set; }
     }
@@ -37,6 +43,18 @@ namespace Overbook
     [XmlRoot(ElementName = "link", Namespace = "http://www.w3.org/2005/Atom")]
     public class AtomLink
     {
+        public AtomLink()
+        {
+            Rel = "self";
+        }
+
+        public AtomLink(string href, string type)
+            : this()
+        {
+            Href = href;
+            Type = type;
+        }
+
         [XmlAttribute(AttributeName = "href")]
         public string Href { get; set; }
 
@@ -50,6 +68,15 @@ namespace Overbook
     [XmlRoot(ElementName = "category", Namespace = "http://www.itunes.com/dtds/podcast-1.0.dtd")]
     public class Category
     {
+        public Category()
+        {
+        }
+
+        public Category(string text)
+        {
+            Text = text;
+        }
+
         [XmlAttribute(AttributeName = "text")]
         public string Text { get; set; }
     }
@@ -57,6 +84,17 @@ namespace Overbook
     [XmlRoot(ElementName = "enclosure")]
     public class Enclosure
     {
+        public Enclosure()
+        {
+        }
+
+        public Enclosure(string url, int length, string type)
+        {
+            Url = url;
+            Length = length;
+            Type = type;
+        }
+
         [XmlAttribute(AttributeName = "url")]
         public string Url { get; set; }
 
@@ -70,6 +108,22 @@ namespace Overbook
     [XmlRoot(ElementName = "guid")]
     public class Guid
     {
+        public Guid()
+        {
+            IsPermaLink = false;
+        }
+
+        public Guid(System.Guid guid)
+            : this()
+        {
+            Text = guid.ToString();
+        }
+
+        public Guid(string guid)
+        {
+            Text = guid;
+        }
+
         [XmlAttribute(AttributeName = "isPermaLink")]
         public bool IsPermaLink { get; set; }
 
@@ -108,6 +162,12 @@ namespace Overbook
     [XmlRoot(ElementName = "channel")]
     public class Channel
     {
+        public Channel()
+        {
+            Language = "en-us";
+            Explicit = "No";
+        }
+
         [XmlElement(ElementName = "title")]
         public string Title { get; set; }
 
@@ -154,6 +214,19 @@ namespace Overbook
     [XmlRoot(ElementName = "rss")]
     public class Rss
     {
+        public Rss()
+        {
+            Atom = "http://www.w3.org/2005/Atom";
+            Itunes = "http://www.itunes.com/dtds/podcast-1.0.dtd";
+            Version = "2.0";
+        }
+
+        public Rss(Channel channel)
+            : this()
+        {
+            Channel = channel;
+        }
+
         [XmlElement(ElementName = "channel")]
         public Channel Channel { get; set; }
 
