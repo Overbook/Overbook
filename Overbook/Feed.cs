@@ -99,7 +99,7 @@ namespace Overbook
         public string Url { get; set; }
 
         [XmlAttribute(AttributeName = "length")]
-        public int Length { get; set; }
+        public long Length { get; set; }
 
         [XmlAttribute(AttributeName = "type")]
         public string Type { get; set; }

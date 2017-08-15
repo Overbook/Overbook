@@ -4,6 +4,7 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Xml;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Overbook
 {
@@ -75,45 +76,89 @@ namespace Overbook
             using (var xmlReader = XmlReader.Create(textReader, new XmlReaderSettings()))
                 return (T)serializer.Deserialize(xmlReader);
         }
+
+        public static IEnumerable<Chapter> GetChaptersFromDirectory(string path, string regex)
+        {
+            var chapters = new List<Chapter>();
+            //TODO: recursive + chapter directory structure
+            foreach (var file in Directory.EnumerateFiles(path, "*.*"))
+            {
+                var filename = Path.GetFileName(file);
+                var match = Regex.Match(filename, regex);
+                if (!match.Success)
+                    continue;
+                chapters.Add(new Chapter
+                {
+                    Number = int.Parse(match.Groups[1].Value),
+                    Name = match.Groups[2].Value,
+                    File = file
+                });
+            }
+            chapters.Sort((a, b) => a.Number.CompareTo(b.Number));
+            return chapters;
+        }
+    }
+
+    public class Chapter
+    {
+        public int Number;
+        public string Name;
+        public string File;
+
+        public override string ToString()
+        {
+            return $"Chapter {Number}: {Name}";
+        }
+
+        public Item ToItem(string baseUrl)
+        {
+            var url = Uri.EscapeUriString(baseUrl + Path.GetFileName(File));
+            return new Item
+            {
+                Title = ToString(),
+                Link = url,
+                PubDate = Utils.DateToString(DateTime.Today),
+                Description = ToString(),
+                Enclosure = new Enclosure
+                {
+                    Url = url,
+                    Length = new FileInfo(File).Length,
+                    Type = "audio/mpeg"
+                },
+                Summary = ToString(),
+                Guid = new Guid(System.Guid.NewGuid().ToString())
+            };
+        }
     }
 
     public static class Program
     {
         public static void Main(string[] args)
         {
+            if(args.Length < 4)
+            {
+                Console.WriteLine("Usage: Overbook dir regex channelFile url");
+                Console.WriteLine("Example: Overbook \"C:\\Audiobook\" \".+ -(\\d +) - (.+).mp3\" channel.xml http://mysite/book1/");
+                return;
+            }
+            var dir = args[0];
+            var regex = args[1];
+            var channelFile = args[2];            
+            var url = args[3];
             var items = new List<Item>();
-            items.Add(new Item
+            var chapters = Utils.GetChaptersFromDirectory(dir, regex);// @".+- (\d+) - (.+).mp3"
+            var date = DateTime.Today;
+            foreach (var ch in chapters)
             {
-                Title = "Our first Item",
-                Link = "http://testing.com/Our_first_item.mp3",
-                PubDate = Utils.DateToString(new DateTime(2014, 8, 13, 15, 47, 0)),
-                Description = "This is our first item in our feed",
-                Enclosure = new Enclosure
-                {
-                    Url = "http://files.idrsolutions.com/Java_PDF_Podcasts/Interview_4_Advice_and_XFA.mp3",
-                    Length = 11779397,
-                    Type = "audio/mpeg"
-                },
-                Summary = "Our first item",
-                Image = new Image("http://files.idrsolutions.com/Java_PDF_Podcasts/idrlogo.png"),
-                Guid = new Guid("ce094c6b-4918-4833-a3fc-c466b3431cd0")
-            });
-            var rss = new Rss(new Channel
-            {
-                Title = "This is our Feed title",
-                Link = "http://www.idrsolutions.com",
-                Description = "This is a brief description of our podcast",
-                Language = "en-us",
-                Copyright = "IDRSolutions copyright 2014",
-                AtomLink = new AtomLink("https://ogilvie.gq/overbook/feed.xml"),
-                LastBuildDate = Utils.DateToString(new DateTime(2014, 8, 13, 15, 47, 0)),
-                Author = "IDRSolutions",
-                Summary = "Our First itunes feed",
-                Owner = new Owner("IDRSolutions", "contact2007@idrsolutions.com"),
-                Image = new Image("http://files.idrsolutions.com/Java_PDF_Podcasts/idrlogo.png"),
-                Category = new Category("Technology"),
-                Items = items
-            });
+                var item = ch.ToItem(url);
+                item.PubDate = Utils.DateToString(date);
+                date = date.AddMinutes(1);
+                items.Add(item);
+            }
+            var channel = Utils.Deserialize<Channel>(File.ReadAllText(channelFile));
+            channel.LastBuildDate = Utils.DateToString(date);
+            channel.Items = items;
+            var rss = new Rss(channel);
             var xml = Utils.Serialize(rss);
             Console.Write(xml);
         }
