@@ -1,0 +1,5 @@
+<?php
+$pushbullet_key = 'x.YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY';
+$cdn_urlbase = 'https://myserver.com/overbook/';
+$cdn_basicauth = 'username:password'
+?>
