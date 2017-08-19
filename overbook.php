@@ -47,7 +47,10 @@ function startsWith($haystack, $needle)
 
 function curlHeaderCallback($resURL, $strHeader)
 {
-    if(startsWith($strHeader, "HTTP") || startsWith($strHeader, 'Content-'))
+    if(startsWith($strHeader, 'HTTP')
+    || startsWith($strHeader, 'Content-')
+    || startsWith($strHeader, 'Accept-Ranges')
+    || startsWith($strHeader, 'ETag'))
         header($strHeader);
     return strlen($strHeader); 
 }
@@ -70,6 +73,8 @@ function getWebdavFile($urlbase, $basicauth, $file)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HEADERFUNCTION, 'curlHeaderCallback');
     curl_setopt($ch, CURLOPT_WRITEFUNCTION, 'curlWriteCallback');
+    if(isset($_SERVER['HTTP_RANGE']))
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Range: ' . $_SERVER['HTTP_RANGE']));
     curl_exec($ch);
     curl_close($ch);
 }
