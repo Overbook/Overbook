@@ -85,12 +85,12 @@ namespace Overbook
             {
                 var filename = Path.GetFileName(file);
                 var match = Regex.Match(filename, regex);
-                if (!match.Success)
+                if (!match.Success || match.Groups.Count == 0)
                     continue;
                 chapters.Add(new Chapter
                 {
                     Number = int.Parse(match.Groups[1].Value),
-                    Name = match.Groups[2].Value,
+                    Name = match.Groups.Count > 1 ? match.Groups[2].Value : "",
                     File = file
                 });
             }
@@ -107,7 +107,10 @@ namespace Overbook
 
         public override string ToString()
         {
-            return $"Chapter {Number}: {Name}";
+            if(string.IsNullOrEmpty(Name))
+                return $"Chapter {Number}";
+            else
+                return $"Chapter {Number}: {Name}";
         }
 
         public Item ToItem(string baseUrl)
@@ -146,7 +149,7 @@ namespace Overbook
             var channelFile = args[2];            
             var url = args[3];
             var items = new List<Item>();
-            var chapters = Utils.GetChaptersFromDirectory(dir, regex);// @".+- (\d+) - (.+).mp3"
+            var chapters = Utils.GetChaptersFromDirectory(dir, regex); // @".+- (\d+) - (.+).mp3"
             var date = DateTime.Today;
             foreach (var ch in chapters)
             {
@@ -155,11 +158,12 @@ namespace Overbook
                 date = date.AddMinutes(1);
                 items.Add(item);
             }
-            var channel = Utils.Deserialize<Channel>(File.ReadAllText(channelFile));
+            var channel = Utils.Deserialize<Channel>(File.ReadAllText(channelFile, Encoding.UTF8));
             channel.LastBuildDate = Utils.DateToString(date);
             channel.Items = items;
             var rss = new Rss(channel);
             var xml = Utils.Serialize(rss);
+            Console.OutputEncoding = Encoding.UTF8;
             Console.Write(xml);
         }
     }
