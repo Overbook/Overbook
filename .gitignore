@@ -5,3 +5,4 @@ obj/
 .vs/
 packages/
 overbook.inc.php
+*.csproj.user
