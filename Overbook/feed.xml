@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
+    <channel>
+        <title>My Audiobooks</title>
+        <link>https://example.com</link>
+        <description>Personal collection of audiobooks.</description>
+        <language>en-us</language>
+        <copyright>John Doe 2022</copyright>
+        <atom:link href="https://username:password@overbook.example.com/feed.xml" rel="self" type="application/rss+xml" />
+        <lastBuildDate>Mon, 18 Jul 2022 23:22:00 GMT</lastBuildDate>
+        <itunes:author>John Doe</itunes:author>
+        <itunes:summary>Personal collection of audiobooks.</itunes:summary>
+        <itunes:owner>
+            <itunes:name>John Doe</itunes:name>
+            <itunes:email>john.doe@example.com</itunes:email>
+        </itunes:owner>
+        <itunes:explicit>No</itunes:explicit>
+        <itunes:image href="https://username:password@overbook.example.com/feed.png" />
+        <itunes:category text="Arts" />
+    </channel>
+</rss>
