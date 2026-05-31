@@ -15,6 +15,7 @@
             <itunes:email>john.doe@example.com</itunes:email>
         </itunes:owner>
         <itunes:explicit>No</itunes:explicit>
+        <itunes:block>Yes</itunes:block>
         <itunes:image href="https://username:password@overbook.example.com/feed.png" />
         <itunes:category text="Arts" />
     </channel>

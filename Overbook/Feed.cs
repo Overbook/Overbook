@@ -166,6 +166,7 @@ namespace Overbook
         {
             Language = "en-us";
             Explicit = "No";
+            Block = "Yes";
         }
 
         [XmlElement(ElementName = "title")]
@@ -200,6 +201,9 @@ namespace Overbook
 
         [XmlElement(ElementName = "explicit", Namespace = "http://www.itunes.com/dtds/podcast-1.0.dtd")]
         public string Explicit { get; set; }
+
+        [XmlElement(ElementName = "block", Namespace = "http://www.itunes.com/dtds/podcast-1.0.dtd")]
+        public string Block { get; set; }
 
         [XmlElement(ElementName = "image", Namespace = "http://www.itunes.com/dtds/podcast-1.0.dtd")]
         public Image Image { get; set; }
